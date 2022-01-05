@@ -1,8 +1,31 @@
 <?php
-if(isset($_POST['submit'])){
-    echo htmlspecialchars($_POST['email']);
-    echo htmlspecialchars($_POST['title']);
-    echo htmlspecialchars($_POST['ingredients']);
+if(isset($_POST['submit'])){ //check to see if POST request has been made
+    if(empty($_POST['email'])){
+        echo 'Email required <br/>';
+    } else {
+        $email = $_POST['email'];
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {//make sure email is valid
+            echo 'Please enter a valid email address <br/>';
+        }
+    }
+    if(empty($_POST['title'])){
+        echo 'title required <br/>';
+    } else {
+        $ingredients = $_POST['ingredients'];
+        if(!preg_match('/^[a-zA-Z\s]+$/', $ingredients)){
+            echo'Letters and Spaces only in ingredients <br/>';
+        }
+
+    }
+    if(empty($_POST['ingredients'])){
+        echo 'ingredients required <br/>';
+    } else {
+        $ingredients = $_POST['ingredients'];
+        if(!preg_match('/^([a-zA-Z\s]+)(,\s*[a-zA-Z\s]*)*$/', $ingredients)){
+            echo 'Enter single ingredient or comma separated list <br/>';
+        }
+  
+    }
 }
 ?>
 <!DOCTYPE html>
