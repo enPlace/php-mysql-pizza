@@ -3,12 +3,14 @@ $errors = ['email'=> '', 'title'=>'', 'ingredients'=>'']; // to be updated if fo
 $email = '';
 $title = '';
 $ingredients = '';
-if(isset($_POST['submit'])){ //check to see if POST request has been made
+
+//check to see if POST request has been made
+if(isset($_POST['submit'])){ 
     if(empty($_POST['email'])){
         $errors['email'] = 'Email required';
     } else {
         $email = htmlspecialchars($_POST['email']);
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {//make sure email is valid
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Please enter a valid email address';
         }
     }
@@ -28,8 +30,13 @@ if(isset($_POST['submit'])){ //check to see if POST request has been made
         if(!preg_match('/^([a-zA-Z\s]+)(,\s*[a-zA-Z\s]*)*$/', $ingredients)){
             $errors['ingredients']= 'Enter single ingredient or comma separated list <br/>';
         }
-  
     }
+    if(array_filter($errors)){
+
+    } else {
+        header('Location: index.php');
+    }
+   
 }
 ?>
 <!DOCTYPE html>
