@@ -1,8 +1,19 @@
 <?php
-$errors = ['email'=> '', 'title'=>'', 'ingredients'=>'']; // to be updated if form is not entered correctly
+
+//connect to database 
+include('connect.php');
+
+
+//form variables
 $email = '';
 $title = '';
 $ingredients = '';
+
+
+//to be updated if form contains incorrect format
+$errors = ['email'=> '', 'title'=>'', 'ingredients'=>''];
+
+
 
 //check to see if POST request has been made
 if(isset($_POST['submit'])){ 
@@ -21,8 +32,8 @@ if(isset($_POST['submit'])){
         if(!preg_match('/^[a-zA-Z\s]+$/', $title)){
             $errors['title']= 'Letters and Spaces only in title <br/>';
         }
-
     }
+
     if(empty($_POST['ingredients'])){
         $errors['ingredients']= 'ingredients required <br/>';
     } else {
@@ -31,14 +42,29 @@ if(isset($_POST['submit'])){
             $errors['ingredients']= 'Enter single ingredient or comma separated list <br/>';
         }
     }
-    if(array_filter($errors)){
 
-    } else {
-        header('Location: index.php');
+    if(!array_filter($errors)){
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $title = mysqli_real_escape_string($conn, $_POST['title']);
+        $incredients = mysqli_real_escape_string($conn, $_POST['ingredients']);
+
+        //write sql
+        $sql = "INSERT INTO `pizza_pies`(`email`, `title`, `ingredients`) VALUES ('$email','$title','$ingredients')";
+
+        //save to db and check
+        if(mysqli_query($conn, $sql)){
+            //success
+            header('Location: index.php');
+        }else {
+            //error
+            echo 'error'.mysqli_error($conn);
+        } 
     }
    
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,7 +81,7 @@ if(isset($_POST['submit'])){
         <input type="text" name = "title" value = "<?= $title?>">
         <div class="red-text"><?= $errors['title']?></div>
         <label for="ingredients">Ingredients (comma separated):</label>
-        <input type="text" name = "ingredients"  value = "<?= $title?>">
+        <input type="text" name = "ingredients"  value = "<?= $ingredients?>">
         <div class="red-text"><?= $errors['ingredients']?></div>
         <div class="center">
             <input type="submit" name = "submit" value = "submit" class = "btn brand z-depth-0">

@@ -2,30 +2,7 @@
 <html lang="en">
 
 <?php 
-    // connect to database
-    $conn = mysqli_connect('localhost', 'enPlace', 'test1234', 'pizza_project');
-
-    if(!$conn){
-        echo 'Connection error: '.mysqli_connect_error();
-    }
-    //write query for all pizzas
-    $sql = 'SELECT title, ingredients, id FROM pizza_pies ORDER BY created_at';
-
-    //make query and get result
-    $result = mysqli_query($conn, $sql);
-    
-    //fetch the resulting rows as an array
-    $all_pies = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-    //free result from memory
-    mysqli_free_result($result);
-    
-    //close connection 
-    mysqli_close($conn);
-
-
-    print_r($all_pies)
-
+    include('connect.php')
     ?>
 
 <?php 
@@ -40,8 +17,23 @@
             <div class="col s6 md3">
                 <div class="card z-depth-0">
                     <div class="card-content center">
-                        <h6><?= htmlspecialchars($pie['title'])?></h6>
-                        <p><?= htmlspecialchars($pie['ingredients'])?></p>
+                        <h5><?= htmlspecialchars($pie['title'])?></h5>
+                        <ul>
+                            <?php 
+                            $ingredients = explode(',',$pie['ingredients']);
+                           // echo $ingredients;
+                            foreach ($ingredients as $ingredient){?>
+                                <li> <h6> <?= htmlspecialchars($ingredient) ?></h6></li>
+                                <?php
+                            };?>
+                        </ul>
+
+
+
+                        <!-- <h6><?= htmlspecialchars($pie['ingredients'])?></h6> -->
+                        <div >
+                            <a href="#" class="brand-text center">More info</a>
+                        </div>
                     </div>
                 </div>
             </div>
