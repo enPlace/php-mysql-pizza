@@ -2,7 +2,8 @@
 <html lang="en">
 
 <?php 
-    include('connect.php')
+    include('connect.php');
+    mysqli_close($conn);
     ?>
 
 <?php 
@@ -32,7 +33,7 @@
 
                         <!-- <h6><?= htmlspecialchars($pie['ingredients'])?></h6> -->
                         <div >
-                            <a href="#" class="brand-text center">More info</a>
+                            <a href="item_detail.php?id=<?=$pie['id']?>" class="brand-text center">More info</a>
                         </div>
                     </div>
                 </div>

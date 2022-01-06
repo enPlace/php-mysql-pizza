@@ -54,6 +54,7 @@ if(isset($_POST['submit'])){
         //save to db and check
         if(mysqli_query($conn, $sql)){
             //success
+            mysqli_close($conn);
             header('Location: index.php');
         }else {
             //error
